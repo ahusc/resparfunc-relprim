@@ -16,7 +16,7 @@ relatively prime numbers. A part of the second algorithm for the construction of
 
 # Authors
 
-The code has been written by Anne Huschitt based on ideas of Alfred Seiler. These ideas are described in the paper "Restricted Partition Function and Fourier-Dedkind sums" (to be published). 
+The code has been written by Anne Huschitt based on ideas of Alfred Seiler. These ideas are described in the paper "Restricted Partition Function and Fourier-Dedekind sums" (to be published). 
 
 # License
 
@@ -33,7 +33,7 @@ or
 ```python
 sage: load("resparfunc-relprim-algo1.sage")
 ```
-The two versions of the algoritm cannot be used in the same sage session.
+The two versions of the algorithm cannot be used in the same sage session.
 
 For the function to calculate Fourier-Dedekind sums, type
 
@@ -51,7 +51,7 @@ or, respectively
 ```python
 sage: fourier_dedekind_sum?
 ```
-to get information about the usage of the package, including various examples. The docmentation can also be found on the [project website] (http://ahusc.github.io/resparfunc-relprim).
+to get information about the usage of the package, including various examples. The documentation can also be found on the [project website] (http://ahusc.github.io/resparfunc-relprim).
 
 For the restricted partition function preferably use the second algorithm as it is considerably more performant in most cases than the first one.
 
