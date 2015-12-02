@@ -1,0 +1,285 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Documentation of Algorithms for the Restricted Partition Function and Fourier-Dedekind Sums &mdash; resparfunc-relprim 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="resparfunc-relprim 1.0 documentation" href="#" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="#">resparfunc-relprim 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Documentation of Algorithms for the Restricted Partition Function and Fourier-Dedekind Sums</a><ul>
+<li><a class="reference internal" href="#restrictedpartitionfunctionrelprim-class-first-algorithm">RestrictedPartitionFunctionRelprim class - first algorithm</a></li>
+<li><a class="reference internal" href="#member-functions">Member functions</a></li>
+<li><a class="reference internal" href="#restrictedpartitionfunctionrelprim-class-second-algorithm">RestrictedPartitionFunctionRelprim class - second algorithm</a></li>
+<li><a class="reference internal" href="#fourier-dedekind-sums">Fourier-Dedekind sums</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/index.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="documentation-of-algorithms-for-the-restricted-partition-function-and-fourier-dedekind-sums">
+<h1>Documentation of Algorithms for the Restricted Partition Function and Fourier-Dedekind Sums<a class="headerlink" href="#documentation-of-algorithms-for-the-restricted-partition-function-and-fourier-dedekind-sums" title="Permalink to this headline">¶</a></h1>
+<p>This is a sagemath implementation of two algorithms to construct the restricted partition function for a given list of pairwise relatively prime positive numbers (also known als Sylvester&#8217;s denumerant) and of an algorithm for the calculation of Fourier-Dedekind sums. A prerequisite for using this code is a properly working installation of <a class="reference external" href="http://www.sagemath.org/">sage</a>.</p>
+<p>The code implements the algorithms outlined in the paper &#8220;Restricted Partition Function and Fourier-Dedekind Sums&#8221;.</p>
+<p>For the construction of the restricted partition function there are two different algorithms. The first one constructs the partition function iteratively, starting with the construction of the partition function for the list that contains only the first element of the initial list. Then it constructs the partition function for the list containing the first two elements using the previously constructed partition function and so on.
+The second one is based on the ability to construct the periodic functions which are part of the partition function independently. Having obtained the periodic functions first, it then calculates the function values for the partition function for several consecutive integers using a brute force method and finally obtains the polynomial part of the partition function using Lagrange&#8217;s interpolation formula.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The second algorithm has a consideraby better performance than the first one for most input sequences.
+For example, the construction of the restricted partition function for the first 300 prime numbers took 7310 seconds when using the first algorithm, but only 413 seconds whe using the second one.
+The tests have been done on a 64-bit Ubuntu laptop with 4 GB of RAM and four Intel(R) Core(TM) i5-2410M processors with a locally installed copy of sage version 6.2.</p>
+</div>
+<p>Fourier-Dedekind sums are number-theoretic objects that are closely
+related to the periodical functions which are part of the representation
+of the restricted partition function for the special case of pairwise
+relatively prime numbers. A part of the second algorithm for the construction of the restricted partition function has been extracted and adapted for the calculation of Fourier-Dedekind sums.</p>
+<div class="section" id="restrictedpartitionfunctionrelprim-class-first-algorithm">
+<h2>RestrictedPartitionFunctionRelprim class - first algorithm<a class="headerlink" href="#restrictedpartitionfunctionrelprim-class-first-algorithm" title="Permalink to this headline">¶</a></h2>
+<p>The description below is applicable for both algorithms for the restricted partition function for pairwise relatively prime integers as implemented in the scripts <em>resparfunc-relprim-algo1.sage</em> and <em>resparfunc-relprim-algo2.sage</em>, respectively. The second algorithm has a considerably better performance than the first one in most cases.</p>
+<span class="target" id="module-resparfunc-relprim-algo1"></span><dl class="class">
+<dt id="resparfunc-relprim-algo1.RestrictedPartitionFunctionRelprim">
+<em class="property">class </em><tt class="descclassname">resparfunc-relprim-algo1.</tt><tt class="descname">RestrictedPartitionFunctionRelprim</tt><big>(</big><em>parts_in=None</em><big>)</big><a class="headerlink" href="#resparfunc-relprim-algo1.RestrictedPartitionFunctionRelprim" title="Permalink to this definition">¶</a></dt>
+<dd><p>RestrictedPartitionFunctionRelprim allows to get the number
+of partitions with parts in a given list of
+pairwise relatively prime positive integers
+for arbitrary nonnegative integers very efficiently.</p>
+<p>Once constructed with
+<tt class="docutils literal"><span class="pre">RestrictedPartitionFunctionRelprim(parts_in=A)</span></tt>
+for a specific restriction list <tt class="docutils literal"><span class="pre">A</span></tt>, a
+<tt class="docutils literal"><span class="pre">RestrictedPartitionFunctionRelprim</span></tt> object can be used to
+calculate the number of partitions for an integer <tt class="docutils literal"><span class="pre">t</span></tt> using the
+object&#8217;s method <tt class="docutils literal"><span class="pre">number_of_partitions(t)</span></tt>.
+Note that this gives the same result as
+<tt class="docutils literal"><span class="pre">Partitions(t,</span> <span class="pre">parts_in=A).cardinality()</span></tt>, but the once
+constructed object can be reused for different values of <tt class="docutils literal"><span class="pre">t</span></tt> and
+the values of <tt class="docutils literal"><span class="pre">t</span></tt> can be considerably larger.</p>
+<p>The representation of a <tt class="docutils literal"><span class="pre">RestrictedPartitionFunctionRelprim</span></tt> object
+is based on the fact that the restricted partition function <img class="math" src="_images/math/b687e528fed8282504c2d302be7482f874cd3494.png" alt="p^{(A)}"/> for
+<img class="math" src="_images/math/4aa9adff72abfc885f303d675186387b08c761c8.png" alt="A=(a_{1},a_{2},...,a_{m})"/>, where the positive integers <img class="math" src="_images/math/c4f8473eac20565df46e727e7b9f14fca92a9ec9.png" alt="a_{k}"/>,
+<img class="math" src="_images/math/b3c279458d4df7d2da046d7edd65b3cc130ddfa8.png" alt="k=1,...,m"/>, are pairwise relatively prime, can be written as
+<img class="math" src="_images/math/0dca42efb4d5b391c8cbabdcc8fd673df21f8db9.png" alt="p^{(A)}=q + \sum_{k=1}^{m}f_{a_{k}}"/> where <cite>q</cite> is a 
+polynomial with rational coefficients and degree <cite>m-1</cite> and 
+<img class="math" src="_images/math/2bf2e48e5640758fabc6bca83bb9bec15194db2b.png" alt="f_{a_{k}}"/> are <cite>m</cite> periodical functions with period <img class="math" src="_images/math/c4f8473eac20565df46e727e7b9f14fca92a9ec9.png" alt="a_{k}"/>
+each, which satisfy the condition
+<img class="math" src="_images/math/5dda1cf1e488ea6dd563297882dcc4af7eb449d3.png" alt="\sum_{i=0}^{a_{k}-1}f_{a_{k}}(i) = 0"/>.
+We represent a periodical function <img class="math" src="_images/math/2bf2e48e5640758fabc6bca83bb9bec15194db2b.png" alt="f_{a_{k}}"/> by an object of type
+<tt class="docutils literal"><span class="pre">PeriodObject</span></tt> containing its period <img class="math" src="_images/math/c4f8473eac20565df46e727e7b9f14fca92a9ec9.png" alt="a_{k}"/> and a list of
+function values <img class="math" src="_images/math/7986a2521407e6d067bada14a81c9877c5d9f4a4.png" alt="f_{a_{k}}(0),...,f_{a_{k}}(a_{k}-1)"/>.</p>
+<p>The time needed to construct a <tt class="docutils literal"><span class="pre">RestrictedPartitionFunctionRelprim</span></tt>
+object for a specific restriction list <tt class="docutils literal"><span class="pre">A</span></tt> in seconds is printed when
+the calculation is finished, but this can be suppressed by setting the
+class variable <tt class="docutils literal"><span class="pre">RestrictedPartitionFunction.print_time=False</span></tt>.</p>
+<p>EXAMPLES:</p>
+<p>Construct partition function for a specific restriction list
+and use it to get the number of partitions for several numbers:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">sage: </span><span class="n">RestrictedPartitionFunctionRelprim</span><span class="o">.</span><span class="n">print_time</span><span class="o">=</span><span class="bp">False</span>  <span class="c"># suppress timing for doctest</span>
+<span class="gp">sage: </span><span class="n">pa</span><span class="o">=</span><span class="n">RestrictedPartitionFunctionRelprim</span><span class="p">([</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">])</span>
+<span class="gp">sage: </span><span class="n">pa</span><span class="o">.</span><span class="n">number_of_partitions</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
+<span class="go">2</span>
+<span class="gp">sage: </span><span class="n">pa</span><span class="o">.</span><span class="n">number_of_partitions</span><span class="p">(</span><span class="mi">10000</span><span class="p">)</span>
+<span class="go">834334</span>
+<span class="gp">sage: </span><span class="n">pa</span><span class="o">.</span><span class="n">number_of_partitions</span><span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="mi">30</span><span class="p">)</span>
+<span class="go">8333333333333333333333333333433333333333333333333333333334</span>
+<span class="gp">sage: </span><span class="n">pa</span><span class="o">.</span><span class="n">number_of_partitions</span><span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="mi">10</span><span class="o">**</span><span class="mi">6</span><span class="p">)</span><span class="o">.</span><span class="n">ndigits</span><span class="p">()</span>
+<span class="go">1999998</span>
+</pre></div>
+</div>
+<p>Showing the polynomial and the periodical functions which represent
+the partition function for a specific restriction list:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">sage: </span><span class="n">pa</span><span class="o">=</span><span class="n">RestrictedPartitionFunctionRelprim</span><span class="p">([</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">])</span>
+<span class="gp">sage: </span><span class="n">pa</span><span class="o">.</span><span class="n">polynomial</span>
+<span class="go">1/120*t^2 + 1/10*t + 191/720</span>
+<span class="gp">sage: </span><span class="n">pa</span><span class="o">.</span><span class="n">periodic_functions</span>
+<span class="go">[P=4, values=[5/16, -1/16, -3/16, -1/16],</span>
+<span class="go"> P=3, values=[2/9, -1/9, -1/9],</span>
+<span class="go"> P=5, values=[1/5, -1/5, -1/5, 1/5, 0]]</span>
+</pre></div>
+</div>
+<p>Comparing <tt class="docutils literal"><span class="pre">RestrictedPartitionFunctionRelprim().number_of_partitions()</span></tt>
+with <tt class="docutils literal"><span class="pre">Partitions().cardinality()</span></tt>. The result must be the same:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">sage: </span><span class="n">A</span><span class="o">=</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">21</span><span class="p">]</span>
+<span class="gp">sage: </span><span class="n">pa</span><span class="o">=</span><span class="n">RestrictedPartitionFunctionRelprim</span><span class="p">(</span><span class="n">parts_in</span><span class="o">=</span><span class="n">A</span><span class="p">)</span>
+<span class="gp">sage: </span><span class="n">t</span><span class="o">=</span><span class="mi">500</span>
+<span class="gp">sage: </span><span class="n">pa</span><span class="o">.</span><span class="n">number_of_partitions</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">==</span> <span class="n">Partitions</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">parts_in</span><span class="o">=</span><span class="n">A</span><span class="p">)</span><span class="o">.</span><span class="n">cardinality</span><span class="p">()</span>
+<span class="go">True</span>
+<span class="gp">sage: </span><span class="nb">len</span><span class="p">([</span><span class="n">t</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="p">[</span><span class="mf">100.</span><span class="o">.</span><span class="mi">200</span><span class="p">]</span> <span class="k">if</span> <span class="n">pa</span><span class="o">.</span><span class="n">number_of_partitions</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">!=</span> <span class="n">Partitions</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">parts_in</span><span class="o">=</span><span class="n">A</span><span class="p">)</span><span class="o">.</span><span class="n">cardinality</span><span class="p">()])</span>
+<span class="go">0</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="member-functions">
+<h2>Member functions<a class="headerlink" href="#member-functions" title="Permalink to this headline">¶</a></h2>
+<dl class="method">
+<dt id="resparfunc-relprim-algo1.RestrictedPartitionFunctionRelprim.number_of_partitions">
+<tt class="descclassname">RestrictedPartitionFunctionRelprim.</tt><tt class="descname">number_of_partitions</tt><big>(</big><em>t</em><big>)</big><a class="headerlink" href="#resparfunc-relprim-algo1.RestrictedPartitionFunctionRelprim.number_of_partitions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the number of partitions of a nonnegative integer <tt class="docutils literal"><span class="pre">t</span></tt> with
+parts in a specific restriction list as contained in the current
+object of type <tt class="docutils literal"><span class="pre">RestrictedPartitionFunctionRelprim</span></tt>.</p>
+<p>Note that this gives the same result as
+<tt class="docutils literal"><span class="pre">Partitions(t,</span> <span class="pre">parts_in=A).cardinality()</span></tt>, but the once
+constructed object of type <tt class="docutils literal"><span class="pre">RestrictedPartitionFunctionRelprim</span></tt>
+can be used to call <tt class="docutils literal"><span class="pre">number_of_partitions</span></tt> consecutively for
+different values of <tt class="docutils literal"><span class="pre">t</span></tt> and the values of <tt class="docutils literal"><span class="pre">t</span></tt> can be
+considerably larger.</p>
+<p>INPUT:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">t</span></tt> &#8211; a nonnegative integer</li>
+</ul>
+<p>OUTPUT:</p>
+<ul class="simple">
+<li>the number of partitions of <tt class="docutils literal"><span class="pre">t</span></tt> with parts in the restriction
+list as contained in the current object</li>
+</ul>
+</dd></dl>
+
+</div>
+<div class="section" id="restrictedpartitionfunctionrelprim-class-second-algorithm">
+<h2>RestrictedPartitionFunctionRelprim class - second algorithm<a class="headerlink" href="#restrictedpartitionfunctionrelprim-class-second-algorithm" title="Permalink to this headline">¶</a></h2>
+<p>The script <em>resparfunc-relprim-algo2.sage</em> has the same interface as <em>resparfunc-relprim-algo1.sage</em>, but it has a considerably better performance in most cases. For usage details, see description of <a class="reference internal" href="#restrictedpartitionfunctionrelprim-class-first-algorithm">RestrictedPartitionFunctionRelprim class - first algorithm</a></p>
+<span class="target" id="module-resparfunc-relprim-algo2"></span></div>
+<div class="section" id="fourier-dedekind-sums">
+<h2>Fourier-Dedekind sums<a class="headerlink" href="#fourier-dedekind-sums" title="Permalink to this headline">¶</a></h2>
+<p>Fourier-Dedekind sums are number-theoretic objects. They are closely
+related to the periodical functions which are part of the representation
+of the restricted partition function for the special case of pairwise
+relatively prime numbers.</p>
+<dl class="function">
+<dt id="fourier-dedekind-sum.fourier_dedekind_sum">
+<tt class="descclassname">fourier-dedekind-sum.</tt><tt class="descname">fourier_dedekind_sum</tt><big>(</big><em>alist</em>, <em>b</em><big>)</big><a class="headerlink" href="#fourier-dedekind-sum.fourier_dedekind_sum" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function allows to get the Fourier-Dedekind sum
+<img class="math" src="_images/math/4f6641883bdd7556ae15b1de8b719fb6effac762.png" alt="s_{n}(a_{1},a_{2},...,a_{d};b)"/> for a list of positive integers
+<img class="math" src="_images/math/2b9d489ae94117e0c1839e551f6be0345972edb6.png" alt="a_{1},a_{2},...,a_{d}"/> and a positive integer <cite>b</cite>, where <cite>b</cite> is
+relatively prime with each <img class="math" src="_images/math/2a772bd794fbedb2976268c491686644aefc02e8.png" alt="a_{i}"/>, <img class="math" src="_images/math/7c26482d5894e9525f5b358dd7acc82f87a5a755.png" alt="i=1,...,d"/>.</p>
+<p>INPUT:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">alist</span></tt> &#8211; a list of positive integers</li>
+<li><tt class="docutils literal"><span class="pre">b</span></tt> &#8211; a positive integer coprime with each integer from <cite>alist</cite></li>
+</ul>
+<p>OUTPUT:</p>
+<ul class="simple">
+<li>a list of <cite>b</cite> rational numbers representing the function values of
+<img class="math" src="_images/math/4f6641883bdd7556ae15b1de8b719fb6effac762.png" alt="s_{n}(a_{1},a_{2},...,a_{d};b)"/> on a period <img class="math" src="_images/math/293463d1b263073b9f7e202d83e450d7ec5a934a.png" alt="0,...,b-1"/></li>
+</ul>
+<p>EXAMPLES:</p>
+<p>Calculate a small Fourier-Dedekind sum:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">sage: </span><span class="n">fourier_dedekind_sum</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">],</span><span class="mi">7</span><span class="p">)</span>
+<span class="go">[1/7, 1/7, 0, -2/7, 2/7, -2/7, 0]</span>
+</pre></div>
+</div>
+<p>Obtain the Fourier-Dedekind sum for a list consisting of the integer
+5 repeated 10 times to illustrate that the algorithm is also usable
+for numbers with are not coprime. Only <cite>b</cite> must be coprime with each
+number of the list. As the resulting Fourier-Dedkind sum is large,
+we do not display it directly, but only the first, the maximum and
+the minimum value:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">sage: </span><span class="n">fds</span><span class="o">=</span><span class="n">fourier_dedekind_sum</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">],</span><span class="mi">101</span><span class="p">)</span>
+<span class="gp">sage: </span><span class="n">fds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="go">-2198653249650/101</span>
+<span class="gp">sage: </span><span class="nb">max</span><span class="p">(</span><span class="n">fds</span><span class="p">)</span>
+<span class="go">2304180724030/101</span>
+<span class="gp">sage: </span><span class="nb">min</span><span class="p">(</span><span class="n">fds</span><span class="p">)</span>
+<span class="go">-2309826017050/101</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><em>Index</em></a></li>
+<li><a class="reference internal" href="py-modindex.html"><em>Module Index</em></a></li>
+<li><a class="reference internal" href="search.html"><em>Search Page</em></a></li>
+</ul>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="#">resparfunc-relprim 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Anne Huschitt.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>

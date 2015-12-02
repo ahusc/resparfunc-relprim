@@ -1,0 +1,62 @@
+.. resparfunc-relprim documentation master file, created by
+   sphinx-quickstart on Sat Nov 28 15:15:24 2015.
+
+Documentation of Algorithms for the Restricted Partition Function and Fourier-Dedekind Sums 
+===========================================================================================
+
+This is a sagemath implementation of two algorithms to construct the restricted partition function for a given list of pairwise relatively prime positive numbers (also known als Sylvester's denumerant) and of an algorithm for the calculation of Fourier-Dedekind sums. A prerequisite for using this code is a properly working installation of `sage <http://www.sagemath.org/>`_.
+
+The code implements the algorithms outlined in the paper "Restricted Partition Function and Fourier-Dedekind Sums".
+
+For the construction of the restricted partition function there are two different algorithms. The first one constructs the partition function iteratively, starting with the construction of the partition function for the list that contains only the first element of the initial list. Then it constructs the partition function for the list containing the first two elements using the previously constructed partition function and so on.
+The second one is based on the ability to construct the periodic functions which are part of the partition function independently. Having obtained the periodic functions first, it then calculates the function values for the partition function for several consecutive integers using a brute force method and finally obtains the polynomial part of the partition function using Lagrange's interpolation formula.
+
+.. note::
+
+    The second algorithm has a consideraby better performance than the first one for most input sequences.
+    For example, the construction of the restricted partition function for the first 300 prime numbers took 7310 seconds when using the first algorithm, but only 413 seconds whe using the second one.
+    The tests have been done on a 64-bit Ubuntu laptop with 4 GB of RAM and four Intel(R) Core(TM) i5-2410M processors with a locally installed copy of sage version 6.2.
+
+Fourier-Dedekind sums are number-theoretic objects that are closely
+related to the periodical functions which are part of the representation
+of the restricted partition function for the special case of pairwise
+relatively prime numbers. A part of the second algorithm for the construction of the restricted partition function has been extracted and adapted for the calculation of Fourier-Dedekind sums.
+    
+
+RestrictedPartitionFunctionRelprim class - first algorithm 
+----------------------------------------------------------
+
+The description below is applicable for both algorithms for the restricted partition function for pairwise relatively prime integers as implemented in the scripts *resparfunc-relprim-algo1.sage* and *resparfunc-relprim-algo2.sage*, respectively. The second algorithm has a considerably better performance than the first one in most cases.
+
+.. module:: resparfunc-relprim-algo1
+.. autoclass:: RestrictedPartitionFunctionRelprim
+
+Member functions
+----------------
+.. currentmodule:: resparfunc-relprim-algo1
+.. automethod:: RestrictedPartitionFunctionRelprim.number_of_partitions
+
+RestrictedPartitionFunctionRelprim class - second algorithm
+-----------------------------------------------------------
+
+The script *resparfunc-relprim-algo2.sage* has the same interface as *resparfunc-relprim-algo1.sage*, but it has a considerably better performance in most cases. For usage details, see description of `RestrictedPartitionFunctionRelprim class - first algorithm`_ 
+
+.. module:: resparfunc-relprim-algo2
+
+Fourier-Dedekind sums
+---------------------
+Fourier-Dedekind sums are number-theoretic objects. They are closely
+related to the periodical functions which are part of the representation
+of the restricted partition function for the special case of pairwise
+relatively prime numbers.
+
+.. currentmodule:: fourier-dedekind-sum
+.. autofunction:: fourier_dedekind_sum
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
+
